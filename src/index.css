@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@import "@fontsource/cormorant-garamond/300.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/700.css";
+@import "@fontsource/cormorant-garamond/300-italic.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cormorant-garamond/500-italic.css";
+@import "@fontsource/jost/300.css";
+@import "@fontsource/jost/400.css";
+@import "@fontsource/jost/500.css";
+
+@theme {
+  /* Autumn palette */
+  --color-terracotta: #C4714A;
+  --color-terracotta-light: #D4896A;
+  --color-terracotta-dark: #A85A35;
+  --color-olive: #6B7645;
+  --color-olive-light: #8A9660;
+  --color-olive-dark: #505930;
+  --color-cream: #F5EDE3;
+  --color-cream-dark: #EDE0D0;
+  --color-brown: #2C2416;
+  --color-beige: #E8D5C0;
+  --color-beige-light: #F2E8DC;
+
+  /* Typography */
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", system-ui, sans-serif;
+}
+
+/* Custom utilities */
+@utility bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #F5EDE3;
+  color: #2C2416;
+  font-family: "Jost", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
