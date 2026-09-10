@@ -7,37 +7,36 @@ interface StoryMoment {
   description: string
 }
 
-// Reemplaza con la historia real de la pareja
 const storyData: StoryMoment[] = [
   {
-    year: '2019',
-    title: 'El primer encuentro',
+    year: 'Febrero 2022',
+    title: 'El comienzo',
     description:
-      'Fue en una tarde de otoño cuando nuestros caminos se cruzaron por primera vez. Una sonrisa bastó para saber que algo especial comenzaba.',
+      'Nuestros caminos se cruzaron y, sin imaginar todo lo que vendría después, comenzó nuestra historia.',
   },
   {
-    year: '2020',
-    title: 'Nuestra primera cita',
+    year: 'Abril 2022',
+    title: 'Un “sí” a nosotros',
     description:
-      'Un café, una conversación que duró horas y la certeza de que queríamos seguir conociéndonos. Desde esa noche, nunca dejamos de vernos.',
+      'Dos meses después decidimos caminar juntos. Entre risas, planes y muchas primeras veces, comenzó nuestra aventura como novios.',
   },
   {
-    year: '2021',
+    year: '2022 - 2025',
     title: 'Juntos en cada aventura',
     description:
-      'Viajes, risas, desafíos superados y recuerdos que atesoramos. Cada experiencia vivida juntos nos hizo más fuertes como pareja.',
+      'Viajes, risas, aprendizajes y recuerdos que hoy atesoramos. Con cada momento compartido fuimos construyendo la vida que soñábamos juntos.',
   },
   {
-    year: '2023',
+    year: 'Febrero 2026',
     title: 'La gran pregunta',
     description:
-      'Bajo un cielo estrellado, con el corazón a mil por hora, llegó el momento que cambiará nuestras vidas para siempre. La respuesta fue sí.',
+      'Cuatro años después de aquel primer encuentro, febrero volvió a regalarnos un momento inolvidable. Esta vez hubo una pregunta, un anillo y un sí para toda la vida.',
   },
   {
-    year: '2026',
+    year: 'Noviembre 2026',
     title: 'El día más esperado',
     description:
-      'Y ahora, rodeados de las personas que amamos, celebramos el comienzo de nuestro capítulo más hermoso. Gracias por ser parte de esta historia.',
+      'Y ahora estamos a punto de comenzar nuestro capítulo favorito. Rodeados de las personas que amamos, celebraremos el inicio de nuestro para siempre. Gracias por ser parte de nuestra historia.',
   },
 ]
 

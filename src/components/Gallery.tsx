@@ -8,39 +8,84 @@ interface GalleryPhoto {
   span?: "tall" | "normal";
 }
 
-// Fotos de Unsplash como placeholder — reemplaza `src` con tus fotos reales
+const CLOUD_BASE = "https://res.cloudinary.com/dzm7v2njj/image/upload";
+
+// Ajusta los `alt` con descripciones reales de cada foto
 const photos: GalleryPhoto[] = [
   {
     id: 1,
-    alt: "Primer encuentro",
-    src: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=800&q=80",
+    alt: "Nuestra historia",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050914/martha-alex/betxxethybyib5odzd6x.jpg`,
     span: "tall",
   },
   {
     id: 2,
-    alt: "Paseo de otoño",
-    src: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&w=600&q=80",
+    alt: "Un abrazo eterno",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050913/martha-alex/zxnbdfgorsgohdduapbd.jpg`,
   },
   {
     id: 3,
-    alt: "Nuestra primera cita",
-    src: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
+    alt: "Miradas cómplices",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050914/martha-alex/vsssyhqznirtmkgtnqo2.jpg`,
   },
   {
     id: 4,
-    alt: "Aventura juntos",
-    src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&q=80",
+    alt: "Caminando juntos",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050913/martha-alex/bkeegjjiagkhvlg6yexm.jpg`,
     span: "tall",
   },
   {
     id: 5,
-    alt: "El compromiso",
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+    alt: "Risas compartidas",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050914/martha-alex/ndvaxxe4dsl6syxgbbzy.jpg`,
   },
   {
     id: 6,
-    alt: "Celebración en familia",
-    src: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80",
+    alt: "Momentos de complicidad",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050913/martha-alex/xfvt3rfxtgselgyqgysm.jpg`,
+  },
+  {
+    id: 7,
+    alt: "El amor en cada detalle",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050913/martha-alex/ifn817jaqgrh6op412se.jpg`,
+    span: "tall",
+  },
+  {
+    id: 8,
+    alt: "Aventuras juntos",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050913/martha-alex/bd8axkqljeex09ankaxy.jpg`,
+  },
+  {
+    id: 9,
+    alt: "Sonrisas sinceras",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050913/martha-alex/hxd8q6o2f81res1qajmp.jpg`,
+  },
+  {
+    id: 10,
+    alt: "Un sí para siempre",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050912/martha-alex/rdhrfysm7kbs4vxanm5a.jpg`,
+    span: "tall",
+  },
+  {
+    id: 11,
+    alt: "Instantes felices",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050912/martha-alex/gitob4glayaemododi8p.jpg`,
+  },
+  {
+    id: 12,
+    alt: "Nuestro camino",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050912/martha-alex/ugsi2maj6iqu48vtju0d.jpg`,
+  },
+  {
+    id: 13,
+    alt: "El día que todo cambió",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050912/martha-alex/nmueqljkhitorujavbhc.jpg`,
+    span: "tall",
+  },
+  {
+    id: 14,
+    alt: "Para siempre juntos",
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_600/v1789050912/martha-alex/m7kmptdqwr27xe7tzfdk.jpg`,
   },
 ];
 
