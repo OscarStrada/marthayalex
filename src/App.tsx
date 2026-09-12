@@ -7,6 +7,7 @@ import OurStory from './components/OurStory'
 import EventDetails from './components/EventDetails'
 import Gallery from './components/Gallery'
 import LocationSection from './components/LocationSection'
+import GiftsSection from './components/GiftsSection'
 import RSVPForm from './components/RSVPForm'
 import Footer from './components/Footer'
 
@@ -28,6 +29,7 @@ export default function App() {
       <Gallery />
       <EventDetails />
       <LocationSection />
+      <GiftsSection />
       <RSVPForm />
       <Footer />
     </main>
