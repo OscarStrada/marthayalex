@@ -79,7 +79,7 @@ const photos: GalleryPhoto[] = [
   {
     id: 13,
     alt: "El día que todo cambió",
-    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050912/martha-alex/nmueqljkhitorujavbhc.jpg`,
+    src: `${CLOUD_BASE}/f_auto,q_auto,w_800/v1789050912/martha-alex/jqftugkw2p1mffjjnnsk.jpg`,
     span: "tall",
   },
   {
