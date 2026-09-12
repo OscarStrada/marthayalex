@@ -30,7 +30,7 @@ const panelVariants: Variants = {
 }
 
 function fullName(guest: Guest): string {
-  return `${guest.nombre} ${guest.apellidoPaterno}`.trim()
+  return [guest.nombre, guest.apellidoPaterno, guest.apellidoMaterno].filter(Boolean).join(' ')
 }
 
 interface PillButtonProps {
@@ -87,7 +87,8 @@ export default function RSVPForm() {
   }, [])
 
   const handleSearch = async () => {
-    if (query.trim().length < 2) {
+    const wordCount = query.trim().split(/\s+/).filter(Boolean).length
+    if (wordCount < 2) {
       setQueryError(true)
       return
     }
@@ -190,7 +191,7 @@ export default function RSVPForm() {
                     onKeyDown={e => {
                       if (e.key === 'Enter') handleSearch()
                     }}
-                    placeholder="Tu nombre o apellido"
+                    placeholder="Tu nombre completo o el apellido de tu familia"
                     className="w-full bg-transparent py-3 px-0 font-serif text-lg focus:outline-none transition-colors duration-200"
                     style={{
                       borderBottom: queryError
@@ -211,7 +212,8 @@ export default function RSVPForm() {
                       className="text-xs mt-2 text-left font-sans"
                       style={{ color: 'rgba(180,50,50,0.85)' }}
                     >
-                      Escribe al menos 2 letras de tu nombre o apellido
+                      Escribe tu nombre completo (ej. "Martha Rico López") o el
+                      apellido completo de tu familia (ej. "Rico López")
                     </p>
                   )}
                 </div>
@@ -266,7 +268,7 @@ export default function RSVPForm() {
                   No te encontramos
                 </p>
                 <p className="font-sans text-sm leading-relaxed" style={{ color: 'rgba(44,36,22,0.6)' }}>
-                  Verifica cómo escribiste tu nombre o apellido.
+                  Verifica que tu nombre completo o el apellido de tu familia estén bien escritos.
                   <br />
                   Si el problema sigue, contáctanos directamente.
                 </p>
@@ -295,7 +297,7 @@ export default function RSVPForm() {
                     style={{ color: 'rgba(44,36,22,0.5)' }}
                   >
                     Encontramos {familias.length} familias con ese apellido. Si no reconoces la
-                    tuya, prueba escribiendo el apellido completo (ej. "Estrada Mendoza").
+                    tuya, prueba escribiendo el apellido completo (ej. "Rico López").
                   </p>
                 )}
 

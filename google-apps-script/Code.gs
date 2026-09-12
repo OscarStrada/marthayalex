@@ -18,8 +18,8 @@
  * ─── COLUMNAS ESPERADAS (fila 1 = encabezados) ─────────────────────────────
  *   A: # (no se usa)          F: Acompañante (cupo asignado, solo lectura)
  *   B: Nombre                 G: Asistirá     ("Sí" / "No")
- *   C: Apellido materno       H: (sin usar)
- *   D: Apellido paterno       I: Niños        (cupo asignado, solo lectura)
+ *   C: Apellido paterno       H: (sin usar)
+ *   D: Apellido materno       I: Niños        (cupo asignado, solo lectura)
  *   E: Familia
  * ────────────────────────────────────────────────────────────────────────────
  */
@@ -27,15 +27,24 @@
 const SHEET_NAME = 'Hoja1'
 const COL = {
   NOMBRE: 2,
-  MATERNO: 3,
-  PATERNO: 4,
+  PATERNO: 3,
+  MATERNO: 4,
   FAMILIA: 5,
   ACOMPANANTE: 6,
   ASISTIRA: 7,
   NINOS: 9,
 }
-const MIN_QUERY_LENGTH = 2
+const MIN_QUERY_WORDS = 2 // exige nombre completo o apellido de familia, no un solo apellido suelto
 const MAX_FAMILIES = 6 // límite de seguridad para no exponer medio listado
+// Palabras de enlace de apellidos compuestos (ej. "De la O"). No cuentan como
+// palabra "real" al decidir si la búsqueda alcanza para tratarla como nombre
+// completo — si no, un apellido compuesto de 3 palabras + otro apellido ya
+// suma 4 tokens y se confunde con un nombre completo de otra familia.
+const STOPWORDS = ['de', 'la', 'los', 'las', 'del', 'y']
+
+function meaningfulWords(words) {
+  return words.filter(w => STOPWORDS.indexOf(w) === -1)
+}
 
 function normalize(text) {
   return String(text || '')
@@ -43,6 +52,10 @@ function normalize(text) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim()
+}
+
+function tokenize(text) {
+  return normalize(text).split(/\s+/).filter(Boolean)
 }
 
 function getSheet() {
@@ -57,8 +70,9 @@ function jsonResponse(payload) {
 
 function doGet(e) {
   try {
-    const query = normalize(e.parameter.q)
-    if (query.length < MIN_QUERY_LENGTH) {
+    const queryWords = tokenize(e.parameter.q)
+    const queryMeaningful = meaningfulWords(queryWords)
+    if (queryMeaningful.length < MIN_QUERY_WORDS) {
       return jsonResponse({ status: 'ok', results: [] })
     }
 
@@ -68,13 +82,24 @@ function doGet(e) {
 
     for (let i = 1; i < values.length; i++) {
       const row = values[i]
-      const haystacks = [
-        row[COL.NOMBRE - 1],
-        row[COL.MATERNO - 1],
-        row[COL.PATERNO - 1],
-        row[COL.FAMILIA - 1],
-      ]
-      if (haystacks.some(v => normalize(v).includes(query))) {
+      const familiaText = normalize(row[COL.FAMILIA - 1])
+      const personText = normalize(
+        [row[COL.NOMBRE - 1], row[COL.MATERNO - 1], row[COL.PATERNO - 1]].join(' '),
+      )
+
+      // Coincide si TODAS las palabras buscadas están en el apellido de
+      // familia (ej. "Estrada Mendoza") o en el nombre completo de esa
+      // persona (ej. "Oscar Arturo Estrada Hernández"). Una sola palabra
+      // suelta (un apellido común) ya no alcanza para traer resultados.
+      const matchesFamilia = queryWords.every(w => familiaText.includes(w))
+      // Requiere 3+ palabras REALES (sin contar "de"/"la"/etc.) para tratarlo
+      // como nombre completo — así un apellido compuesto de varias palabras
+      // (ej. "De la O") + otro apellido no se confunde con el nombre de
+      // alguien de una familia distinta que casualmente tiene esos mismos
+      // dos apellidos por matrimonio.
+      const matchesPersona = queryMeaningful.length >= 3 && queryWords.every(w => personText.includes(w))
+
+      if (matchesFamilia || matchesPersona) {
         matchedFamilies.add(row[COL.FAMILIA - 1])
         if (matchedFamilies.size > MAX_FAMILIES) break
       }

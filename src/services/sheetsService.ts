@@ -50,23 +50,47 @@ function normalize(text: string): string {
     .trim()
 }
 
+function tokenize(text: string): string[] {
+  return normalize(text).split(/\s+/).filter(Boolean)
+}
+
+// Palabras de enlace de apellidos compuestos (ej. "De la O"). No cuentan como
+// palabra "real" al decidir si la búsqueda alcanza para tratarla como nombre
+// completo — si no, un apellido compuesto de varias palabras + otro apellido
+// ya suma 3+ tokens y se confunde con el nombre completo de otra familia.
+const STOPWORDS = new Set(['de', 'la', 'los', 'las', 'del', 'y'])
+
+function meaningfulWords(words: string[]): string[] {
+  return words.filter(w => !STOPWORDS.has(w))
+}
+
+// Exige nombre completo o apellido de familia completo (2+ palabras reales),
+// nunca un solo apellido suelto — así una búsqueda no expone a otras familias
+// que comparten un apellido común, y nadie puede tocar el estado de alguien
+// más sin conocer ya su nombre completo o el apellido de su familia.
+const MIN_QUERY_WORDS = 2
+
 export async function searchGuests(query: string): Promise<Guest[]> {
-  const trimmed = query.trim()
-  if (trimmed.length < 2) return []
+  const queryWords = tokenize(query)
+  const queryMeaningful = meaningfulWords(queryWords)
+  if (queryMeaningful.length < MIN_QUERY_WORDS) return []
 
   if (!isConfigured) {
     console.warn('[sheetsService] VITE_GOOGLE_SCRIPT_URL no está configurado. Usando datos de prueba.')
     await new Promise(resolve => setTimeout(resolve, 400))
-    const q = normalize(trimmed)
     const families = new Set(
-      MOCK_GUESTS.filter(g =>
-        [g.nombre, g.apellidoMaterno, g.apellidoPaterno, g.familia].some(v => normalize(v).includes(q)),
-      ).map(g => g.familia),
+      MOCK_GUESTS.filter(g => {
+        const familiaText = normalize(g.familia)
+        const personText = normalize(`${g.nombre} ${g.apellidoMaterno} ${g.apellidoPaterno}`)
+        const matchesFamilia = queryWords.every(w => familiaText.includes(w))
+        const matchesPersona = queryMeaningful.length >= 3 && queryWords.every(w => personText.includes(w))
+        return matchesFamilia || matchesPersona
+      }).map(g => g.familia),
     )
     return MOCK_GUESTS.filter(g => families.has(g.familia)).map(g => ({ ...g }))
   }
 
-  const res = await fetch(`${SCRIPT_URL}?q=${encodeURIComponent(trimmed)}`)
+  const res = await fetch(`${SCRIPT_URL}?q=${encodeURIComponent(query.trim())}`)
   const data = await res.json()
   return data.results ?? []
 }
