@@ -28,8 +28,8 @@ export default function Footer() {
   return (
     <footer
       ref={sectionRef}
-      className="py-20 px-6 text-center"
-      style={{ backgroundColor: "#2C2416" }}
+      className="relative z-10 py-20 px-6 text-center"
+      style={{ backgroundColor: "rgba(44,36,22,0.85)" }}
     >
       <div className="max-w-xl mx-auto space-y-7">
         {/* Top ornament */}

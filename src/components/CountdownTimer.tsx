@@ -86,8 +86,8 @@ export default function CountdownTimer() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 px-6 text-center"
-      style={{ backgroundColor: '#EDE0D0' }}
+      className="relative z-10 py-24 px-6 text-center"
+      style={{ backgroundColor: 'rgba(237,224,208,0.8)' }}
     >
       <p
         className="font-sans text-xs tracking-[0.42em] uppercase mb-4"

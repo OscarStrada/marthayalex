@@ -146,8 +146,8 @@ export default function RSVPForm() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 px-6 text-center"
-      style={{ backgroundColor: '#F2E8DC' }}
+      className="relative z-10 py-24 px-6 text-center"
+      style={{ backgroundColor: 'rgba(242,232,220,0.8)' }}
     >
       <div className="max-w-md mx-auto">
         <p

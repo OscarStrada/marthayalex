@@ -127,8 +127,8 @@ export default function Gallery() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 px-6"
-      style={{ backgroundColor: "#F5EDE3" }}
+      className="relative z-10 py-24 px-6"
+      style={{ backgroundColor: "rgba(245,237,227,0.8)" }}
     >
       <div className="max-w-5xl mx-auto">
         <div className="gallery-heading text-center mb-16">
