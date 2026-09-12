@@ -90,68 +90,54 @@ export default function GiftsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {options.map((opt) => (
+        <div className="relative grid grid-cols-1 md:grid-cols-2">
+          {/* Vertical divider between the two options, desktop only */}
+          <div
+            className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            style={{ backgroundColor: "rgba(196,113,74,0.25)" }}
+          />
+
+          {options.map((opt, i) => (
             <div
               key={opt.title}
-              className="gift-card flex flex-col"
-              style={{ border: "1px solid rgba(196,113,74,0.22)" }}
+              className={`gift-card text-center px-6 md:px-14 ${
+                i === 0
+                  ? "md:pr-16"
+                  : "md:pl-16 pt-14 md:pt-0 border-t md:border-t-0"
+              }`}
+              style={{ borderColor: "rgba(196,113,74,0.25)" }}
             >
-              {/* Header band */}
-              <div
-                className="px-8 py-4 flex items-center gap-3"
-                style={{
-                  backgroundColor: "rgba(196,113,74,0.08)",
-                  borderBottom: "1px solid rgba(196,113,74,0.15)",
-                }}
+              <span className="text-3xl block mb-5">{opt.icon}</span>
+              <h3
+                className="font-serif font-light mb-4"
+                style={{ color: "#2C2416", fontSize: "1.4rem" }}
               >
-                <span className="text-lg">{opt.icon}</span>
-                <span
-                  className="font-sans text-xs tracking-[0.3em] uppercase"
+                {opt.title}
+              </h3>
+              <p
+                className="font-sans text-sm leading-relaxed"
+                style={{ color: "rgba(44,36,22,0.6)" }}
+              >
+                {opt.description}
+              </p>
+              {opt.detail && (
+                <p
+                  className="font-serif mt-5"
+                  style={{ color: "#2C2416", fontSize: "1.6rem", letterSpacing: "0.04em" }}
+                >
+                  {opt.detail}
+                </p>
+              )}
+              {opt.ctaHref && (
+                <a
+                  href={opt.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-6 font-sans text-xs tracking-[0.25em] uppercase underline underline-offset-4"
                   style={{ color: "#C4714A" }}
                 >
-                  {opt.title}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 px-8 py-8 space-y-4">
-                <p
-                  className="font-sans text-sm leading-relaxed"
-                  style={{ color: "rgba(44,36,22,0.65)" }}
-                >
-                  {opt.description}
-                </p>
-                {opt.detail && (
-                  <p
-                    className="font-serif"
-                    style={{ color: "#2C2416", fontSize: "1.6rem", letterSpacing: "0.04em" }}
-                  >
-                    {opt.detail}
-                  </p>
-                )}
-              </div>
-
-              {opt.ctaHref && (
-                <div className="px-8 pb-8">
-                  <a
-                    href={opt.ctaHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full py-3 text-center font-sans text-xs tracking-[0.25em] uppercase transition-all duration-300"
-                    style={{ border: "1px solid #C4714A", color: "#C4714A" }}
-                    onMouseEnter={e => {
-                      ;(e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#C4714A"
-                      ;(e.currentTarget as HTMLAnchorElement).style.color = "#F5EDE3"
-                    }}
-                    onMouseLeave={e => {
-                      ;(e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent"
-                      ;(e.currentTarget as HTMLAnchorElement).style.color = "#C4714A"
-                    }}
-                  >
-                    {opt.ctaLabel} →
-                  </a>
-                </div>
+                  {opt.ctaLabel} →
+                </a>
               )}
             </div>
           ))}
