@@ -69,9 +69,10 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 h-screen w-full flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: "rgba(44,36,22,0.85)" }}
+      className="relative h-screen w-full flex items-center justify-center overflow-hidden"
     >
+      <div className="absolute inset-0" style={{ backgroundColor: "#2C2416" }} />
+
       {/* Radial overlay for text legibility */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"

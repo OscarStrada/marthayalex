@@ -80,10 +80,10 @@ export default function EventDetails() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 py-24 px-6"
-      style={{ backgroundColor: "rgba(245,237,227,0.8)" }}
+      className="relative py-24 px-6"
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="absolute inset-0" style={{ backgroundColor: "#F5EDE3" }} />
+      <div className="relative z-10 max-w-5xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
           <p
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"

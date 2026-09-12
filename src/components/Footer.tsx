@@ -28,10 +28,10 @@ export default function Footer() {
   return (
     <footer
       ref={sectionRef}
-      className="relative z-10 py-20 px-6 text-center"
-      style={{ backgroundColor: "rgba(44,36,22,0.85)" }}
+      className="relative py-20 px-6 text-center"
     >
-      <div className="max-w-xl mx-auto space-y-7">
+      <div className="absolute inset-0" style={{ backgroundColor: "#2C2416" }} />
+      <div className="relative z-10 max-w-xl mx-auto space-y-7">
         {/* Top ornament */}
         <div className="footer-reveal flex items-center justify-center gap-5">
           <div

@@ -59,11 +59,12 @@ function CountUnit({ value, label }: UnitProps) {
 
 export default function CountdownTimer() {
   const sectionRef = useRef<HTMLElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const { days, hours, minutes, seconds } = useCountdown('2026-11-14T17:00:00')
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(sectionRef.current, {
+      gsap.from(contentRef.current, {
         opacity: 0,
         y: 50,
         duration: 1,
@@ -84,38 +85,38 @@ export default function CountdownTimer() {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative z-10 py-24 px-6 text-center"
-      style={{ backgroundColor: 'rgba(237,224,208,0.8)' }}
-    >
-      <p
-        className="font-sans text-xs tracking-[0.42em] uppercase mb-4"
-        style={{ color: '#C4714A' }}
-      >
-        La cuenta regresiva
-      </p>
-      <h2
-        className="font-serif font-light mb-16"
-        style={{ color: '#2C2416', fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
-      >
-        Faltan...
-      </h2>
+    <section ref={sectionRef} className="relative py-24 px-6 text-center">
+      <div className="absolute inset-0" style={{ backgroundColor: '#EDE0D0' }} />
 
-      <div className="flex flex-wrap items-center justify-center gap-5 md:gap-10">
-        <CountUnit value={days} label="Días" />
-        <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
-          ·
-        </span>
-        <CountUnit value={hours} label="Horas" />
-        <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
-          ·
-        </span>
-        <CountUnit value={minutes} label="Minutos" />
-        <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
-          ·
-        </span>
-        <CountUnit value={seconds} label="Segundos" />
+      <div ref={contentRef} className="relative z-10">
+        <p
+          className="font-sans text-xs tracking-[0.42em] uppercase mb-4"
+          style={{ color: '#C4714A' }}
+        >
+          La cuenta regresiva
+        </p>
+        <h2
+          className="font-serif font-light mb-16"
+          style={{ color: '#2C2416', fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
+        >
+          Faltan...
+        </h2>
+
+        <div className="flex flex-wrap items-center justify-center gap-5 md:gap-10">
+          <CountUnit value={days} label="Días" />
+          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+            ·
+          </span>
+          <CountUnit value={hours} label="Horas" />
+          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+            ·
+          </span>
+          <CountUnit value={minutes} label="Minutos" />
+          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+            ·
+          </span>
+          <CountUnit value={seconds} label="Segundos" />
+        </div>
       </div>
     </section>
   )
