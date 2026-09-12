@@ -58,7 +58,6 @@ function PillButton({ label, active, activeColor, onClick }: PillButtonProps) {
 
 export default function RSVPForm() {
   const sectionRef = useRef<HTMLElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [queryError, setQueryError] = useState(false)
   const [stage, setStage] = useState<Stage>('search')
@@ -67,7 +66,7 @@ export default function RSVPForm() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(contentRef.current, {
+      gsap.from(sectionRef.current, {
         opacity: 0,
         y: 55,
         duration: 1,
@@ -147,10 +146,10 @@ export default function RSVPForm() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 px-6 text-center"
+      className="py-24 px-6 text-center"
+      style={{ backgroundColor: '#F2E8DC' }}
     >
-      <div className="absolute inset-0" style={{ backgroundColor: '#F2E8DC' }} />
-      <div ref={contentRef} className="relative z-10 max-w-md mx-auto">
+      <div className="max-w-md mx-auto">
         <p
           className="font-sans text-xs tracking-[0.42em] uppercase mb-3"
           style={{ color: '#C4714A' }}

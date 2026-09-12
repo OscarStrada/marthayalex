@@ -69,9 +69,8 @@ export default function OurStory() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative py-24 px-6">
-      <div className="absolute inset-0" style={{ backgroundColor: '#EDE0D0' }} />
-      <div className="relative z-10 max-w-3xl mx-auto">
+    <section ref={sectionRef} className="py-24 px-6" style={{ backgroundColor: '#EDE0D0' }}>
+      <div className="max-w-3xl mx-auto">
         <div className="story-heading text-center mb-20">
           <p
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"

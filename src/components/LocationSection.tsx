@@ -71,10 +71,10 @@ export default function LocationSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 px-6"
+      className="py-24 px-6"
+      style={{ backgroundColor: "#EDE0D0" }}
     >
-      <div className="absolute inset-0" style={{ backgroundColor: "#EDE0D0" }} />
-      <div className="relative z-10 max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="location-heading text-center mb-16">
           <p
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"

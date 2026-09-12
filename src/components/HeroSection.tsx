@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import ThreeBackground from "./ThreeBackground";
 
 function wrapWords(text: string): string {
   return text
@@ -70,8 +71,9 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: "#2C2416" }}
     >
-      <div className="absolute inset-0" style={{ backgroundColor: "#2C2416" }} />
+      <ThreeBackground />
 
       {/* Radial overlay for text legibility */}
       <div

@@ -80,10 +80,8 @@ export default function CountdownTimer() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative py-24 px-6 text-center">
-      <div className="absolute inset-0" style={{ backgroundColor: '#EDE0D0' }} />
-
-      <div ref={contentRef} className="relative z-10">
+    <section ref={sectionRef} className="py-24 px-6 text-center" style={{ backgroundColor: '#EDE0D0' }}>
+      <div ref={contentRef}>
         <p
           className="font-sans text-xs tracking-[0.42em] uppercase mb-4"
           style={{ color: '#C4714A' }}

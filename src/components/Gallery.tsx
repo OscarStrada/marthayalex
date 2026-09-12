@@ -127,10 +127,10 @@ export default function Gallery() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 px-6"
+      className="py-24 px-6"
+      style={{ backgroundColor: "#F5EDE3" }}
     >
-      <div className="absolute inset-0" style={{ backgroundColor: "#F5EDE3" }} />
-      <div className="relative z-10 max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="gallery-heading text-center mb-16">
           <p
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"

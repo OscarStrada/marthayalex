@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import ThreeBackground from "./ThreeBackground";
 
 export default function Footer() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -31,6 +32,7 @@ export default function Footer() {
       className="relative py-20 px-6 text-center"
     >
       <div className="absolute inset-0" style={{ backgroundColor: "#2C2416" }} />
+      <ThreeBackground variant="pile" />
       <div className="relative z-10 max-w-xl mx-auto space-y-7">
         {/* Top ornament */}
         <div className="footer-reveal flex items-center justify-center gap-5">
