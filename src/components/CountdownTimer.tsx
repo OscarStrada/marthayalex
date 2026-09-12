@@ -12,12 +12,8 @@ function CountUnit({ value, label }: UnitProps) {
   return (
     <div className="flex flex-col items-center gap-3">
       <div
-        className="relative flex items-center justify-center"
-        style={{
-          width: 'clamp(72px, 14vw, 108px)',
-          height: 'clamp(72px, 14vw, 108px)',
-          border: '1px solid rgba(196,113,74,0.28)',
-        }}
+        className="relative flex items-center justify-center w-[128px] h-[128px] sm:w-[clamp(72px,14vw,108px)] sm:h-[clamp(72px,14vw,108px)]"
+        style={{ border: '1px solid rgba(196,113,74,0.28)' }}
       >
         {/* Corner marks */}
         <span
@@ -37,10 +33,9 @@ function CountUnit({ value, label }: UnitProps) {
           style={{ borderBottom: '1px solid rgba(196,113,74,0.5)', borderRight: '1px solid rgba(196,113,74,0.5)' }}
         />
         <span
-          className="font-serif font-light tabular-nums"
+          className="font-serif font-light tabular-nums text-[2.75rem] sm:text-[clamp(2rem,6vw,3.5rem)]"
           style={{
             color: '#2C2416',
-            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
             lineHeight: 1,
           }}
         >
@@ -102,17 +97,26 @@ export default function CountdownTimer() {
           Faltan...
         </h2>
 
-        <div className="flex flex-wrap items-center justify-center gap-5 md:gap-10">
+        <div className="grid grid-cols-2 gap-y-8 gap-x-10 justify-items-center sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-10">
           <CountUnit value={days} label="Días" />
-          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+          <span
+            className="hidden sm:inline-block font-serif text-3xl pb-8"
+            style={{ color: 'rgba(196,113,74,0.5)' }}
+          >
             ·
           </span>
           <CountUnit value={hours} label="Horas" />
-          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+          <span
+            className="hidden sm:inline-block font-serif text-3xl pb-8"
+            style={{ color: 'rgba(196,113,74,0.5)' }}
+          >
             ·
           </span>
           <CountUnit value={minutes} label="Minutos" />
-          <span className="font-serif text-3xl pb-8" style={{ color: 'rgba(196,113,74,0.5)' }}>
+          <span
+            className="hidden sm:inline-block font-serif text-3xl pb-8"
+            style={{ color: 'rgba(196,113,74,0.5)' }}
+          >
             ·
           </span>
           <CountUnit value={seconds} label="Segundos" />
