@@ -1,14 +1,58 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-function createLeafShape(): THREE.Shape {
-  const shape = new THREE.Shape()
-  shape.moveTo(0, 0.5)
-  shape.bezierCurveTo(0.22, 0.38, 0.28, 0.12, 0.28, 0)
-  shape.bezierCurveTo(0.28, -0.22, 0.14, -0.44, 0, -0.5)
-  shape.bezierCurveTo(-0.14, -0.44, -0.28, -0.22, -0.28, 0)
-  shape.bezierCurveTo(-0.28, 0.12, -0.22, 0.38, 0, 0.5)
-  return shape
+// Draws the leaf silhouette + veins into a canvas texture. A flat vector fill
+// reads as a plain blob at small on-screen sizes; a rasterized midrib and
+// side veins are what make it legible as an actual leaf instead of a stain.
+function createLeafTexture(): THREE.CanvasTexture {
+  const size = 128
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')!
+  const cx = size / 2
+  const cy = size / 2
+  const s = size * 0.46
+
+  ctx.translate(cx, cy)
+  ctx.beginPath()
+  ctx.moveTo(0, -s)
+  ctx.bezierCurveTo(s * 0.55, -s * 0.55, s * 0.62, s * 0.25, s * 0.15, s * 0.85)
+  ctx.bezierCurveTo(s * 0.08, s * 0.95, -s * 0.08, s * 0.95, -s * 0.15, s * 0.85)
+  ctx.bezierCurveTo(-s * 0.62, s * 0.25, -s * 0.55, -s * 0.55, 0, -s)
+  ctx.closePath()
+
+  ctx.save()
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+  ctx.clip()
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.32)'
+  ctx.lineWidth = s * 0.045
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  ctx.moveTo(0, -s * 0.95)
+  ctx.lineTo(0, s * 0.88)
+  ctx.stroke()
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)'
+  ctx.lineWidth = s * 0.028
+  for (const t of [-0.55, -0.2, 0.15, 0.5]) {
+    const y = -s * 0.7 + t * s * 1.3
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(s * 0.34, y - s * 0.12)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(-s * 0.34, y - s * 0.12)
+    ctx.stroke()
+  }
+  ctx.restore()
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.needsUpdate = true
+  return texture
 }
 
 const PALETTE = [0xC4714A, 0x6B7645, 0xE8D5C0, 0xA85A35, 0x8A9660, 0xD4896A, 0x505930]
@@ -42,21 +86,25 @@ export default function ThreeBackground() {
       return { w: h * camera.aspect, h }
     }
 
-    const leafShape = createLeafShape()
-    const leafGeometry = new THREE.ShapeGeometry(leafShape, 10)
+    const leafTexture = createLeafTexture()
+    const leafGeometry = new THREE.PlaneGeometry(1, 1)
+    const leafMaterials: THREE.MeshBasicMaterial[] = []
     const particles: THREE.Mesh[] = []
 
     const { w: vw, h: vh } = getViewport()
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const material = new THREE.MeshBasicMaterial({
+        map: leafTexture,
         color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.35 + Math.random() * 0.5,
+        alphaTest: 0.1,
+        opacity: 0.55 + Math.random() * 0.4,
       })
+      leafMaterials.push(material)
       const mesh = new THREE.Mesh(leafGeometry, material)
-      const scale = 0.25 + Math.random() * 0.65
+      const scale = 0.3 + Math.random() * 0.7
       mesh.scale.setScalar(scale)
       mesh.position.set(
         (Math.random() - 0.5) * vw,
@@ -117,7 +165,8 @@ export default function ThreeBackground() {
       cancelAnimationFrame(animId)
       resizeObserver.disconnect()
       leafGeometry.dispose()
-      particles.forEach(p => (p.material as THREE.MeshBasicMaterial).dispose())
+      leafTexture.dispose()
+      leafMaterials.forEach(m => m.dispose())
       renderer.dispose()
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement)
@@ -125,5 +174,10 @@ export default function ThreeBackground() {
     }
   }, [])
 
-  return <div ref={mountRef} className="absolute inset-0 z-0" />
+  return (
+    <div
+      ref={mountRef}
+      className="fixed inset-0 z-[60] pointer-events-none"
+    />
+  )
 }
