@@ -57,6 +57,25 @@ function createLeafTexture(): THREE.CanvasTexture {
 
 const PALETTE = [0xC4714A, 0x6B7645, 0xE8D5C0, 0xA85A35, 0x8A9660, 0xD4896A, 0x505930]
 const PARTICLE_COUNT = 80
+const GRAVITY = 0.0016
+// The footer acts as "ground": at most this many leaves pile up there, and
+// only while the footer is actually on screen — scroll away and the pile
+// releases instead of accumulating forever.
+const MAX_SETTLED_ON_FOOTER = 16
+const FOOTER_GUST_INTERVAL = 7 // seconds between automatic wind gusts
+
+type LeafMode = 'falling' | 'settled' | 'scattered'
+
+interface LeafState {
+  mode: LeafMode
+  driftSpeed: number
+  rotationSpeed: number
+  wobblePhase: number
+  wobbleAmp: number
+  vx: number
+  vy: number
+  restOffset: number
+}
 
 export default function ThreeBackground() {
   const mountRef = useRef<HTMLDivElement>(null)
@@ -64,6 +83,8 @@ export default function ThreeBackground() {
   useEffect(() => {
     const container = mountRef.current
     if (!container) return
+
+    const footerEl = document.querySelector('footer')
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -84,6 +105,13 @@ export default function ThreeBackground() {
       const vFOV = (camera.fov * Math.PI) / 180
       const h = 2 * Math.tan(vFOV / 2) * camera.position.z
       return { w: h * camera.aspect, h }
+    }
+
+    // Converts a viewport-relative pixel Y (0 = top of screen) into the
+    // matching Y in Three.js world units, given the current world height.
+    const screenYToWorldY = (screenY: number, worldHeight: number) => {
+      const fraction = screenY / window.innerHeight
+      return worldHeight / 2 - fraction * worldHeight
     }
 
     const leafTexture = createLeafTexture()
@@ -112,38 +140,117 @@ export default function ThreeBackground() {
         (Math.random() - 0.5) * 15,
       )
       mesh.rotation.z = Math.random() * Math.PI * 2
-      mesh.userData = {
+      const state: LeafState = {
+        mode: 'falling',
         driftSpeed: 0.012 + Math.random() * 0.022,
         rotationSpeed: (Math.random() - 0.5) * 0.018,
         wobblePhase: Math.random() * Math.PI * 2,
         wobbleAmp: 0.004 + Math.random() * 0.009,
+        vx: 0,
+        vy: 0,
+        restOffset: Math.random() * 0.4,
       }
+      mesh.userData = state
       scene.add(mesh)
       particles.push(mesh)
     }
 
     let animId: number
     let time = 0
+    let gustTimer = 0
 
     const animate = () => {
       animId = requestAnimationFrame(animate)
       time += 0.016
       const { w, h } = getViewport()
 
-      for (const p of particles) {
-        const ud = p.userData as {
-          driftSpeed: number
-          rotationSpeed: number
-          wobblePhase: number
-          wobbleAmp: number
+      // The "floor" only exists while the footer is on screen — it sits at
+      // the footer's own bottom edge (or the viewport bottom, whichever is
+      // higher up), so leaves pile on the footer itself, never in the blank
+      // space past the end of the page.
+      let footerVisible = false
+      let floorWorldY = -h / 2 - 999
+      if (footerEl) {
+        const rect = footerEl.getBoundingClientRect()
+        footerVisible = rect.top < window.innerHeight && rect.bottom > 0
+        if (footerVisible) {
+          const floorScreenY = Math.min(window.innerHeight, rect.bottom)
+          floorWorldY = screenYToWorldY(floorScreenY, h)
         }
-        p.position.y -= ud.driftSpeed
-        p.position.x += Math.sin(time * 0.4 + ud.wobblePhase) * ud.wobbleAmp
-        p.rotation.z += ud.rotationSpeed
+      }
 
-        if (p.position.y < -h / 2 - 2) {
-          p.position.y = h / 2 + 2
-          p.position.x = (Math.random() - 0.5) * w
+      if (footerVisible) {
+        gustTimer += 0.016
+      } else {
+        gustTimer = 0
+      }
+
+      let settledCount = 0
+      for (const p of particles) {
+        if ((p.userData as LeafState).mode === 'settled') settledCount++
+      }
+
+      // Periodic gust: blow the whole pile back into the air, then it drifts
+      // back down and settles again.
+      if (footerVisible && settledCount > 0 && gustTimer >= FOOTER_GUST_INTERVAL) {
+        gustTimer = 0
+        for (const p of particles) {
+          const ud = p.userData as LeafState
+          if (ud.mode !== 'settled') continue
+          ud.mode = 'scattered'
+          ud.vy = -(0.2 + Math.random() * 0.3)
+          ud.vx = (Math.random() - 0.5) * 0.9
+          ud.rotationSpeed = (Math.random() - 0.5) * 0.05
+        }
+      }
+
+      for (const p of particles) {
+        const ud = p.userData as LeafState
+
+        if (ud.mode === 'falling') {
+          p.position.y -= ud.driftSpeed
+          p.position.x += Math.sin(time * 0.4 + ud.wobblePhase) * ud.wobbleAmp
+          p.rotation.z += ud.rotationSpeed
+
+          if (p.position.x > w / 2 + 2 || p.position.x < -w / 2 - 2) {
+            p.position.x = (Math.random() - 0.5) * w
+          }
+
+          if (
+            footerVisible &&
+            settledCount < MAX_SETTLED_ON_FOOTER &&
+            p.position.y <= floorWorldY + ud.restOffset
+          ) {
+            p.position.y = floorWorldY + ud.restOffset
+            ud.mode = 'settled'
+            settledCount++
+          } else if (p.position.y < -h / 2 - 2) {
+            p.position.y = h / 2 + 2
+            p.position.x = (Math.random() - 0.5) * w
+          }
+        } else if (ud.mode === 'settled') {
+          // The floor only exists while looking at the footer — scroll away
+          // and the pile releases instead of staying stuck forever.
+          if (!footerVisible) ud.mode = 'falling'
+        } else if (ud.mode === 'scattered') {
+          ud.vy += GRAVITY
+          p.position.y += ud.vy
+          p.position.x += ud.vx
+          ud.vx *= 0.985
+          p.rotation.z += ud.rotationSpeed
+
+          if (footerVisible && p.position.y <= floorWorldY + ud.restOffset && ud.vy >= 0) {
+            p.position.y = floorWorldY + ud.restOffset
+            ud.mode = 'settled'
+            ud.vx = 0
+            ud.vy = 0
+          } else if (p.position.y < -h / 2 - 2) {
+            p.position.y = h / 2 + 2
+            p.position.x = (Math.random() - 0.5) * w
+            ud.mode = 'falling'
+            ud.vx = 0
+            ud.vy = 0
+          }
         }
       }
 
