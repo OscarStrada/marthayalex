@@ -56,43 +56,14 @@ function createLeafTexture(): THREE.CanvasTexture {
 }
 
 const PALETTE = [0xC4714A, 0x6B7645, 0xE8D5C0, 0xA85A35, 0x8A9660, 0xD4896A, 0x505930]
-const GRAVITY = 0.0016
-const FLOOR_MARGIN = 0.35
+const PARTICLE_COUNT = 80
 
-type LeafMode = 'falling' | 'settled' | 'scattered'
-
-interface LeafState {
-  mode: LeafMode
-  driftSpeed: number
-  rotationSpeed: number
-  wobblePhase: number
-  wobbleAmp: number
-  vx: number
-  vy: number
-  restOffset: number
-}
-
-interface ThreeBackgroundProps {
-  /**
-   * 'simple' (default): leaves drift down and recycle to the top forever —
-   * used in the hero banner.
-   * 'pile': leaves drift down and pile up at the bottom like real fallen
-   * leaves, and only scatter into the air when this element scrolls out of
-   * view (as if someone had just kicked through the pile) — used in the
-   * footer, so it reads as "the ground".
-   */
-  variant?: 'simple' | 'pile'
-  particleCount?: number
-}
-
-export default function ThreeBackground({ variant = 'simple', particleCount }: ThreeBackgroundProps) {
+export default function ThreeBackground() {
   const mountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const container = mountRef.current
     if (!container) return
-
-    const count = particleCount ?? (variant === 'pile' ? 36 : 80)
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -122,7 +93,7 @@ export default function ThreeBackground({ variant = 'simple', particleCount }: T
 
     const { w: vw, h: vh } = getViewport()
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       const material = new THREE.MeshBasicMaterial({
         map: leafTexture,
         color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
@@ -141,94 +112,39 @@ export default function ThreeBackground({ variant = 'simple', particleCount }: T
         (Math.random() - 0.5) * 15,
       )
       mesh.rotation.z = Math.random() * Math.PI * 2
-      const state: LeafState = {
-        mode: 'falling',
+      mesh.userData = {
         driftSpeed: 0.012 + Math.random() * 0.022,
         rotationSpeed: (Math.random() - 0.5) * 0.018,
         wobblePhase: Math.random() * Math.PI * 2,
         wobbleAmp: 0.004 + Math.random() * 0.009,
-        vx: 0,
-        vy: 0,
-        restOffset: Math.random() * 0.5,
       }
-      mesh.userData = state
       scene.add(mesh)
       particles.push(mesh)
     }
 
     let animId: number
     let time = 0
-    let hasBeenVisible = false
 
     const animate = () => {
       animId = requestAnimationFrame(animate)
       time += 0.016
       const { w, h } = getViewport()
 
-      if (variant === 'pile') {
-        const rect = container.getBoundingClientRect()
-        const visible = rect.top < window.innerHeight && rect.bottom > 0
-        if (visible) {
-          hasBeenVisible = true
-        } else if (hasBeenVisible) {
-          // Just scrolled away from the footer: kick the whole pile airborne.
-          hasBeenVisible = false
-          for (const p of particles) {
-            const ud = p.userData as LeafState
-            if (ud.mode !== 'settled') continue
-            ud.mode = 'scattered'
-            ud.vy = -(0.35 + Math.random() * 0.35)
-            ud.vx = (Math.random() - 0.5) * 1.4
-            ud.rotationSpeed = (Math.random() - 0.5) * 0.08
-          }
-        }
-      }
-
-      const floorY = -h / 2 + FLOOR_MARGIN
-
       for (const p of particles) {
-        const ud = p.userData as LeafState
-
-        if (variant === 'simple') {
-          p.position.y -= ud.driftSpeed
-          p.position.x += Math.sin(time * 0.4 + ud.wobblePhase) * ud.wobbleAmp
-          p.rotation.z += ud.rotationSpeed
-
-          if (p.position.y < -h / 2 - 2) {
-            p.position.y = h / 2 + 2
-            p.position.x = (Math.random() - 0.5) * w
-          }
-          continue
+        const ud = p.userData as {
+          driftSpeed: number
+          rotationSpeed: number
+          wobblePhase: number
+          wobbleAmp: number
         }
+        p.position.y -= ud.driftSpeed
+        p.position.x += Math.sin(time * 0.4 + ud.wobblePhase) * ud.wobbleAmp
+        p.rotation.z += ud.rotationSpeed
 
-        // 'pile' variant: falling -> settled -> scattered -> settled again
-        if (ud.mode === 'falling') {
-          p.position.y -= ud.driftSpeed
-          p.position.x += Math.sin(time * 0.4 + ud.wobblePhase) * ud.wobbleAmp
-          p.rotation.z += ud.rotationSpeed
-
-          if (p.position.x > w / 2 + 2 || p.position.x < -w / 2 - 2) {
-            p.position.x = (Math.random() - 0.5) * w
-          }
-          if (p.position.y <= floorY + ud.restOffset) {
-            p.position.y = floorY + ud.restOffset
-            ud.mode = 'settled'
-          }
-        } else if (ud.mode === 'scattered') {
-          ud.vy += GRAVITY
-          p.position.y += ud.vy
-          p.position.x += ud.vx
-          ud.vx *= 0.985
-          p.rotation.z += ud.rotationSpeed
-
-          if (p.position.y <= floorY + ud.restOffset && ud.vy >= 0) {
-            p.position.y = floorY + ud.restOffset
-            ud.mode = 'settled'
-            ud.vx = 0
-            ud.vy = 0
-          }
+        if (p.position.y < -h / 2 - 2) {
+          p.position.y = h / 2 + 2
+          p.position.x = (Math.random() - 0.5) * w
         }
-        // 'settled' leaves stay put until the pile is kicked again.
       }
 
       renderer.render(scene, camera)
@@ -256,7 +172,7 @@ export default function ThreeBackground({ variant = 'simple', particleCount }: T
         container.removeChild(renderer.domElement)
       }
     }
-  }, [variant, particleCount])
+  }, [])
 
   return (
     <div
