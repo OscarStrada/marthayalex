@@ -112,10 +112,9 @@ export default function EventDetails() {
             symbol="◈"
             title="Hora"
             lines={[
-              "Ceremonia Religiosa",
-              "4:00 PM",
-              "Recepción 6:00 PM",
-              "Ceremonia Civil 7:00 PM",
+              "Boda Religiosa: 16:00",
+              "Recepción: 18:00",
+              "Boda Civil: 19:00",
             ]}
           />
           <DetailCard
