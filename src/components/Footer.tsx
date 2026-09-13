@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <footer
       ref={sectionRef}
-      className="py-20 px-6 text-center"
+      className="relative py-20 px-6 text-center"
       style={{ backgroundColor: "#2C2416" }}
     >
       <div className="max-w-xl mx-auto space-y-7">
@@ -96,8 +96,8 @@ export default function Footer() {
       </div>
 
       <p
-        className="footer-reveal font-sans text-[10px] tracking-[0.2em] uppercase mt-16"
-        style={{ color: "rgba(232,213,192,0.3)" }}
+        className="absolute bottom-3 right-4 font-sans text-[9px] tracking-wide"
+        style={{ color: "rgba(232,213,192,0.22)" }}
       >
         Developed by{" "}
         <a
@@ -105,12 +105,12 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-2 transition-colors duration-200"
-          style={{ color: "rgba(232,213,192,0.45)" }}
+          style={{ color: "rgba(232,213,192,0.32)" }}
           onMouseEnter={e => {
             e.currentTarget.style.color = "#C4714A"
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.color = "rgba(232,213,192,0.45)"
+            e.currentTarget.style.color = "rgba(232,213,192,0.32)"
           }}
         >
           khutz
