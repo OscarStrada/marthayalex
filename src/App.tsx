@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HeroSection from './components/HeroSection'
 import CountdownTimer from './components/CountdownTimer'
+import ParentsSection from './components/ParentsSection'
 import OurStory from './components/OurStory'
 import EventDetails from './components/EventDetails'
 import Gallery from './components/Gallery'
@@ -25,6 +26,7 @@ export default function App() {
     <main style={{ backgroundColor: '#F5EDE3', minHeight: '100vh' }}>
       <HeroSection />
       <CountdownTimer />
+      <ParentsSection />
       <OurStory />
       <Gallery />
       <EventDetails />
