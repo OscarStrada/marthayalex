@@ -96,7 +96,7 @@ export default function Footer() {
       </div>
 
       <p
-        className="absolute bottom-3 right-4 font-sans text-[9px] tracking-wide"
+        className="absolute bottom-4 right-8 font-sans text-xs tracking-wide"
         style={{ color: "rgba(232,213,192,0.22)" }}
       >
         Developed by{" "}
