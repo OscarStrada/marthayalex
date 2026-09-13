@@ -94,6 +94,28 @@ export default function Footer() {
           />
         </div>
       </div>
+
+      <p
+        className="footer-reveal font-sans text-[10px] tracking-[0.2em] uppercase mt-16"
+        style={{ color: "rgba(232,213,192,0.3)" }}
+      >
+        Developed by{" "}
+        <a
+          href="https://khutz.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 transition-colors duration-200"
+          style={{ color: "rgba(232,213,192,0.45)" }}
+          onMouseEnter={e => {
+            e.currentTarget.style.color = "#C4714A"
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.color = "rgba(232,213,192,0.45)"
+          }}
+        >
+          khutz
+        </a>
+      </p>
     </footer>
   );
 }
