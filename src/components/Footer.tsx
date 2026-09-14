@@ -96,7 +96,7 @@ export default function Footer() {
       </div>
 
       <p
-        className="absolute bottom-4 right-8 font-sans text-xs tracking-wide"
+        className="mt-10 text-center sm:mt-0 sm:absolute sm:bottom-4 sm:right-8 sm:text-left font-sans text-xs tracking-wide"
         style={{ color: "rgba(232,213,192,0.22)" }}
       >
         Developed by{" "}
