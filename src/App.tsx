@@ -23,7 +23,7 @@ export default function App() {
   }, [])
 
   return (
-    <main style={{ backgroundColor: '#F5EDE3', minHeight: '100vh' }}>
+    <main style={{ backgroundColor: '#F5EDE3', minHeight: '100vh', overflowX: 'hidden' }}>
       <HeroSection />
       <CountdownTimer />
       <ParentsSection />
