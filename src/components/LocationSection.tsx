@@ -80,7 +80,7 @@ export default function LocationSection() {
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"
             style={{ color: "#C4714A" }}
           >
-            ¿Dónde nos encontramos?
+            Detalles del lugar
           </p>
           <h2
             className="font-serif font-light"
