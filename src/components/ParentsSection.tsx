@@ -7,8 +7,14 @@ interface Couple {
 }
 
 const parents: Couple[] = [
-  { role: "Padres de la Novia", names: ["Gabriel Flores Cruz", "Martha Rico López"] },
-  { role: "Padres del Novio", names: ["Artemio López Toledo", "Rosalía De Paz Nataren"] },
+  {
+    role: "Padres de la Novia",
+    names: ["Dr. Gabriel Flores Cruz", "L.C. Martha Rico López"],
+  },
+  {
+    role: "Padres del Novio",
+    names: ["Sr. Artemio López Toledo", "Sra. Rosalía De Paz Nataren"],
+  },
 ];
 
 const padrinos: Couple[] = [
@@ -16,15 +22,27 @@ const padrinos: Couple[] = [
     role: "Velación",
     names: ["Ing. Alberto de la O Andraca", "Sra. Alicia Rico López"],
   },
-  { role: "Anillos", names: ["C.P. David Nájera Gutiérrez", "Sra. Artemia Rico López"] },
+  {
+    role: "Anillos",
+    names: ["C.P. David Nájera Gutiérrez", "Sra. Artemia Rico López"],
+  },
   {
     role: "Arras",
-    names: ["C.P. Luis Arturo Mejía Aguilar", "C.P. María Guadalupe Rico López"],
+    names: [
+      "C.P. Luis Arturo Mejía Aguilar",
+      "M. Ed. María Guadalupe Rico López",
+    ],
   },
-  { role: "Lazo", names: ["Ing. Cesareo Murillo Santana", "Profa. Olga Rico López"] },
+  {
+    role: "Lazo",
+    names: ["Ing. Cesareo Murillo Santana", "Profa. Olga Rico López"],
+  },
   {
     role: "Libro y Rosario",
-    names: ["Prof. José Carlos De Paz Nataren", "Profa. Viridiana Hernández Trinidad"],
+    names: [
+      "Prof. José Carlos De Paz Nataren",
+      "Profa. Viridiana Hernández Trinidad",
+    ],
   },
 ];
 
@@ -51,11 +69,16 @@ export default function ParentsSection() {
           duration: 0.8,
           stagger: 0.15,
           ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%", once: true },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            once: true,
+          },
         });
       }
 
-      const padrinoItems = sectionRef.current?.querySelectorAll(".padrino-item");
+      const padrinoItems =
+        sectionRef.current?.querySelectorAll(".padrino-item");
       if (padrinoItems) {
         gsap.from(padrinoItems, {
           opacity: 0,
@@ -63,7 +86,11 @@ export default function ParentsSection() {
           duration: 0.7,
           stagger: 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 55%", once: true },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 55%",
+            once: true,
+          },
         });
       }
     }, sectionRef);
@@ -141,7 +168,7 @@ export default function ParentsSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-          {padrinos.map(p => (
+          {padrinos.map((p) => (
             <div key={p.role} className="padrino-item text-center">
               <p
                 className="font-sans text-xs tracking-[0.25em] uppercase mb-3"
