@@ -103,7 +103,7 @@ export default function HeroSection() {
         <h1
           className="font-serif font-light leading-none tracking-tight"
           style={{ color: "#F5EDE3", fontSize: "clamp(3.5rem, 10vw, 8rem)" }}
-          dangerouslySetInnerHTML={{ __html: wrapWords("Martha & Alex") }}
+          dangerouslySetInnerHTML={{ __html: wrapWords("Martha Gabriella & Alexander") }}
         />
 
         {/* Decorative divider */}

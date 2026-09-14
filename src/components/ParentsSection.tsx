@@ -7,20 +7,20 @@ interface Couple {
 }
 
 const parents: Couple[] = [
-  { role: "Padres del Novio", names: ["Artemio López Toledo", "Rosalía De Paz Nataren"] },
   { role: "Padres de la Novia", names: ["Gabriel Flores Cruz", "Martha Rico López"] },
+  { role: "Padres del Novio", names: ["Artemio López Toledo", "Rosalía De Paz Nataren"] },
 ];
 
 const padrinos: Couple[] = [
   {
-    role: "Padrinos de Velación",
+    role: "Velación",
     names: ["Ing. Alberto de la O Andraca", "Sra. Alicia Rico López"],
   },
+  { role: "Anillos", names: ["C.P. David Nájera Gutiérrez", "Sra. Artemia Rico López"] },
   {
     role: "Arras",
     names: ["C.P. Luis Arturo Mejía Aguilar", "C.P. María Guadalupe Rico López"],
   },
-  { role: "Anillos", names: ["C.P. David Nájera Gutiérrez", "Sra. Artemia Rico López"] },
   { role: "Lazo", names: ["Ing. Cesareo Murillo Santana", "Profa. Olga Rico López"] },
   {
     role: "Libro y Rosario",
