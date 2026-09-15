@@ -5,6 +5,7 @@ interface GiftOption {
   icon: string;
   title: string;
   description: string;
+  accountName?: string;
   detail?: string;
   ctaLabel?: string;
   ctaHref?: string;
@@ -16,6 +17,13 @@ const options: GiftOption[] = [
     title: "Sobres con Dinero",
     description:
       "Si deseas obsequiarnos algo, un sobre es una opción sencilla y práctica. Habrá un buzón especial disponible el día del evento.",
+  },
+  {
+    icon: "🏦",
+    title: "Depósito Bancario",
+    description: "Si prefieres transferencia, estos son los datos de la cuenta:",
+    accountName: "Martha Gabriella Flores Rico Lopez",
+    detail: "012180 015008419606",
   },
   {
     icon: "🎁",
@@ -67,7 +75,7 @@ export default function GiftsSection() {
       className="py-24 px-6"
       style={{ backgroundColor: "#F5EDE3" }}
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="gifts-heading text-center mb-16">
           <p
             className="font-sans text-xs tracking-[0.42em] uppercase mb-3"
@@ -90,20 +98,12 @@ export default function GiftsSection() {
           </p>
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2">
-          {/* Vertical divider between the two options, desktop only */}
-          <div
-            className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
-            style={{ backgroundColor: "rgba(196,113,74,0.25)" }}
-          />
-
+        <div className="grid grid-cols-1 md:grid-cols-3">
           {options.map((opt, i) => (
             <div
               key={opt.title}
-              className={`gift-card text-center px-6 md:px-14 ${
-                i === 0
-                  ? "md:pr-16"
-                  : "md:pl-16 pt-14 md:pt-0 border-t md:border-t-0"
+              className={`gift-card text-center px-6 md:px-10 ${
+                i > 0 ? "pt-14 md:pt-0 border-t md:border-t-0 md:border-l" : ""
               }`}
               style={{ borderColor: "rgba(196,113,74,0.25)" }}
             >
@@ -120,13 +120,25 @@ export default function GiftsSection() {
               >
                 {opt.description}
               </p>
-              {opt.detail && (
-                <p
-                  className="font-serif mt-5"
-                  style={{ color: "#2C2416", fontSize: "1.6rem", letterSpacing: "0.04em" }}
-                >
-                  {opt.detail}
-                </p>
+              {(opt.accountName || opt.detail) && (
+                <div className="mt-5 space-y-1">
+                  {opt.accountName && (
+                    <p
+                      className="font-sans text-sm"
+                      style={{ color: "rgba(44,36,22,0.7)" }}
+                    >
+                      {opt.accountName}
+                    </p>
+                  )}
+                  {opt.detail && (
+                    <p
+                      className="font-serif"
+                      style={{ color: "#2C2416", fontSize: "1.4rem", letterSpacing: "0.04em" }}
+                    >
+                      {opt.detail}
+                    </p>
+                  )}
+                </div>
               )}
               {opt.ctaHref && (
                 <a
