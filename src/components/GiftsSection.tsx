@@ -21,7 +21,7 @@ const options: GiftOption[] = [
   {
     icon: "🏦",
     title: "Depósito Bancario",
-    description: "Si prefieres transferencia, estos son los datos de la cuenta:",
+    description: "Si prefieres transferencia, estos son los datos de la cuenta BBVA:",
     accountName: "Martha Gabriella Flores Rico Lopez",
     detail: "012180 015008419606",
   },
