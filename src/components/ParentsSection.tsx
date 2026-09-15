@@ -9,11 +9,11 @@ interface Couple {
 const parents: Couple[] = [
   {
     role: "Padres de la Novia",
-    names: ["Dr. Gabriel Flores Cruz", "L.C. Martha Rico López"],
+    names: ["Gabriel Flores Cruz", "Martha Rico López"],
   },
   {
     role: "Padres del Novio",
-    names: ["Sr. Artemio López Toledo", "Sra. Rosalía De Paz Nataren"],
+    names: ["Artemio López Toledo", "Rosalía De Paz Nataren"],
   },
 ];
 
