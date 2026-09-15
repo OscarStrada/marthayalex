@@ -157,17 +157,11 @@ export default function RSVPForm() {
           Tu presencia
         </p>
         <h2
-          className="font-serif font-light mb-4"
+          className="font-serif font-light mb-14"
           style={{ color: '#2C2416', fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
         >
           Confirma tu Asistencia
         </h2>
-        <p
-          className="font-sans text-sm leading-relaxed mb-16"
-          style={{ color: 'rgba(44,36,22,0.55)' }}
-        >
-          Por favor confírmanos antes del 1° de octubre de 2026
-        </p>
 
         <div className="min-h-60 flex items-center justify-center">
           <AnimatePresence mode="wait">
